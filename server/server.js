@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import todoRoutes from './routes/todoRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 dotenv.config();
 
@@ -19,8 +20,9 @@ app.get('/api/health', (req, res) => {
   res.json({ message: 'Server running' });
 });
 
-// TODO: Connect routes
-// app.use('/api/todos', todoRoutes);
+// Routes
+app.use('/api/todos', todoRoutes);
+app.use('/api/auth', authRoutes);
 
 // MongoDB Connection
 mongoose
