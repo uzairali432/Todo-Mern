@@ -12,6 +12,8 @@ export default function TodoList() {
   const [deleteTodo] = useDeleteTodoMutation();
   const [toggleTodo] = useToggleTodoMutation();
   const [newTitle, setNewTitle] = useState('');
+  const [showAiSection, setShowAiSection] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState([]);
 
   const handleAddTodo = async () => {
     if (!newTitle.trim()) return;
@@ -27,23 +29,15 @@ export default function TodoList() {
     await toggleTodo(id);
   };
 
-  if (isLoading) return <p>Loading todos...</p>;
-  if (isError) return <p>Failed to load todos</p>;
+  const handleAiSuggest = () => {
+    // Placeholder for AI API call
+    // You'll integrate the API here
+    setAiSuggestions(['Sample AI suggestion 1', 'Sample AI suggestion 2']);
+  };
 
-import { useState } from 'react';
-import {
-  useGetTodosQuery,
-  useCreateTodoMutation,
-  useDeleteTodoMutation,
-  useToggleTodoMutation,
-} from '../services/rtkApi';
-
-export default function TodoList() {
-  const { data: todos = [], isLoading, isError } = useGetTodosQuery();
-  const [createTodo] = useCreateTodoMutation();
-  const [deleteTodo] = useDeleteTodoMutation();
-  const [toggleTodo] = useToggleTodoMutation();
-  const [newTitle, setNewTitle] = useState('');
+  const addAiSuggestion = (suggestion) => {
+    setNewTitle(suggestion);
+  };
 
   const handleAddTodo = async () => {
     if (!newTitle.trim()) return;
@@ -64,6 +58,37 @@ export default function TodoList() {
 
   return (
     <div>
+      <div className="mb-4">
+        <button
+          onClick={() => setShowAiSection(!showAiSection)}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mb-4"
+        >
+          {showAiSection ? 'Hide AI Suggestions' : 'Show AI Suggestions'}
+        </button>
+        {showAiSection && (
+          <div className="mb-4 p-4 bg-blue-50 rounded-md">
+            <button
+              onClick={handleAiSuggest}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mb-2"
+            >
+              Generate AI Suggestions
+            </button>
+            <ul className="space-y-1">
+              {aiSuggestions.map((suggestion, index) => (
+                <li key={index} className="flex items-center justify-between p-2 bg-white rounded">
+                  <span>{suggestion}</span>
+                  <button
+                    onClick={() => addAiSuggestion(suggestion)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-sm"
+                  >
+                    Add
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
       <div className="mb-4">
         <input
           type="text"

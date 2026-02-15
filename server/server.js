@@ -33,7 +33,8 @@ mongoose
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err);
-    process.exit(1);
+    // Start server anyway for development
+    app.listen(PORT, () => console.log(`Server on port ${PORT} (without MongoDB)`));
   });
 
 export default app;
