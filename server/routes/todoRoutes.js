@@ -6,6 +6,7 @@ import {
   updateTodo,
   deleteTodo,
   toggleTodo,
+  getRecommendations,
 } from '../controllers/todoController.js';
 
 const router = express.Router();
@@ -18,5 +19,8 @@ router.route('/:id').get(getTodo).put(updateTodo).delete(deleteTodo);
 
 // Toggle todo completion
 router.patch('/:id/toggle', toggleTodo);
+
+// Get AI recommendations
+router.post('/recommend', getRecommendations);
 
 export default router;

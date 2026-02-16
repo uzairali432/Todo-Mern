@@ -4,6 +4,7 @@ import {
   useCreateTodoMutation,
   useDeleteTodoMutation,
   useToggleTodoMutation,
+  useGetRecommendationsMutation,
 } from '../services/rtkApi';
 
 export default function TodoList() {
@@ -11,9 +12,11 @@ export default function TodoList() {
   const [createTodo] = useCreateTodoMutation();
   const [deleteTodo] = useDeleteTodoMutation();
   const [toggleTodo] = useToggleTodoMutation();
+  const [getRecommendations] = useGetRecommendationsMutation();
   const [newTitle, setNewTitle] = useState('');
   const [showAiSection, setShowAiSection] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState([]);
+  const [aiPrompt, setAiPrompt] = useState('');
 
   const handleAddTodo = async () => {
     if (!newTitle.trim()) return;
@@ -29,24 +32,19 @@ export default function TodoList() {
     await toggleTodo(id);
   };
 
-  const handleAiSuggest = () => {
-    // Placeholder for AI API call
-    // You'll integrate the API here
-    setAiSuggestions(['Sample AI suggestion 1', 'Sample AI suggestion 2']);
+  const handleAiSuggest = async () => {
+    if (!aiPrompt.trim()) return;
+    try {
+      const result = await getRecommendations(aiPrompt).unwrap();
+      setAiSuggestions(result);
+    } catch (error) {
+      console.error('Failed to get recommendations:', error);
+      setAiSuggestions(['Error fetching suggestions']);
+    }
   };
 
   const addAiSuggestion = (suggestion) => {
     setNewTitle(suggestion);
-  };
-
-  const handleAddTodo = async () => {
-    if (!newTitle.trim()) return;
-    await createTodo({ title: newTitle.trim() });
-    setNewTitle('');
-  };
-
-  const handleDeleteTodo = async (id) => {
-    await deleteTodo(id);
   };
 
   const handleToggleTodo = async (id) => {
@@ -67,6 +65,13 @@ export default function TodoList() {
         </button>
         {showAiSection && (
           <div className="mb-4 p-4 bg-blue-50 rounded-md">
+            <input
+              type="text"
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              placeholder="Enter a prompt for AI suggestions (e.g., 'things to do for a healthy lifestyle')"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 mb-2"
+            />
             <button
               onClick={handleAiSuggest}
               className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mb-2"

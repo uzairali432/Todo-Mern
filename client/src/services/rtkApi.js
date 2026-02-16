@@ -78,6 +78,13 @@ export const api = createApi({
         { type: 'Todos', id: 'LIST' },
       ],
     }),
+    getRecommendations: builder.mutation({
+      query: (prompt) => ({
+        url: '/todos/recommend',
+        method: 'POST',
+        body: { prompt },
+      }),
+    }),
   }),
 });
 
@@ -89,6 +96,7 @@ export const {
   useUpdateTodoMutation,
   useDeleteTodoMutation,
   useToggleTodoMutation,
+  useGetRecommendationsMutation,
 } = api;
 
 
