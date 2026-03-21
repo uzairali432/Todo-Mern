@@ -33,5 +33,5 @@ This project allows users to create, update, delete, and manage daily tasks with
 
 ---
 
-## 📂 Project Structure
+## Made by Uzair 
 
