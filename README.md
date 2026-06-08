@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Todo MERN
 
 A full-stack todo application built with React, Vite, Express, MongoDB, and Mongoose. The app supports user registration and login, todo CRUD, completion toggling, and AI-generated todo suggestions.
